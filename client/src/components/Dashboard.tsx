@@ -29,7 +29,7 @@ export default function Dashboard() {
     <>
       {dialogOpen && <NewCallDialog onClose={() => setDialogOpen(false)} />}
       {/* Top bar */}
-      <header className="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between">
+      <header className="bg-white border-b border-slate-200 px-4 sm:px-8 py-4 flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold text-slate-800">Dashboard</h1>
           <p className="text-sm text-slate-400">Thursday, April 17 2026</p>
@@ -48,9 +48,9 @@ export default function Dashboard() {
       </header>
 
       {/* Page body */}
-      <main className="flex-1 overflow-y-auto px-8 py-6 space-y-6">
+      <main className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 space-y-6">
         {/* Stat cards */}
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           {statCards.map(({ label, value, change, up }) => (
             <div key={label} className="bg-white rounded-xl border border-slate-200 p-5">
               <p className="text-xs font-medium text-slate-400 uppercase tracking-wide mb-3">{label}</p>
@@ -63,21 +63,22 @@ export default function Dashboard() {
         </div>
 
         {/* Content row */}
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Recent calls table */}
-          <div className="col-span-2 bg-white rounded-xl border border-slate-200">
+          <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200">
             <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
               <h2 className="text-sm font-semibold text-slate-700">Recent Calls</h2>
               <button className="text-xs text-violet-600 hover:text-violet-800 font-medium">
                 View all →
               </button>
             </div>
+            <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-slate-400 font-medium border-b border-slate-100">
                   <th className="px-5 py-3">Contact</th>
-                  <th className="px-5 py-3">Rep</th>
-                  <th className="px-5 py-3">Duration</th>
+                  <th className="px-5 py-3 hidden sm:table-cell">Rep</th>
+                  <th className="px-5 py-3 hidden sm:table-cell">Duration</th>
                   <th className="px-5 py-3">Status</th>
                 </tr>
               </thead>
@@ -85,8 +86,8 @@ export default function Dashboard() {
                 {recentCalls.map((row) => (
                   <tr key={row.contact} className="hover:bg-slate-50 transition-colors">
                     <td className="px-5 py-3 font-medium text-slate-700">{row.contact}</td>
-                    <td className="px-5 py-3 text-slate-500">{row.rep}</td>
-                    <td className="px-5 py-3 text-slate-500">{row.duration}</td>
+                    <td className="px-5 py-3 text-slate-500 hidden sm:table-cell">{row.rep}</td>
+                    <td className="px-5 py-3 text-slate-500 hidden sm:table-cell">{row.duration}</td>
                     <td className="px-5 py-3">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         row.ok ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'
@@ -98,6 +99,7 @@ export default function Dashboard() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
 
           {/* Top reps */}
