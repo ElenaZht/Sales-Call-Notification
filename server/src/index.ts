@@ -16,7 +16,7 @@ app.use(express.json());
  * @returns 200 { success: true, message: string }
  * @returns 400 { success: false, message: string } if any field is missing
  */
-app.post('/send-notification', (req: Request<{}, {}, ClientCall>, res: Response) => {
+app.post('/send-notification', async (req: Request<{}, {}, ClientCall>, res: Response) => {
   const { companyName, contactName, callOutcome, shortSummary } = req.body;
 
   if (!companyName || !contactName || !callOutcome || !shortSummary) {
@@ -24,9 +24,18 @@ app.post('/send-notification', (req: Request<{}, {}, ClientCall>, res: Response)
     return;
   }
 
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
   res.status(200).json({ success: true, message: 'Notification sent successfully' });
 });
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+}).on('error', (err: NodeJS.ErrnoException) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use.`);
+  } else {
+    console.error('Failed to start server:', err.message);
+  }
+  process.exit(1);
 });
